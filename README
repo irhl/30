@@ -1,0 +1,8 @@
+dbus
+
+* 1.14.8 (2023-08-30):
+
+    tools/dbus-launch-x11.c
+
+    -  98 #define DBUS_DIR ".dbus"
+    +  98 #define DBUS_DIR ".cache/dbus"
