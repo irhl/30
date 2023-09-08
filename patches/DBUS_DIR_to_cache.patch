@@ -1,0 +1,12 @@
+--- a/tools/dbus-launch-x11.c	2022-02-23 14:39:11.000000000 +0000
++++ b/tools/dbus-launch-x11.c	2023-08-30 15:18:27.967509629 +0000
+@@ -87,7 +87,7 @@
+   return home;
+ }
+
+-#define DBUS_DIR ".dbus"
++#define DBUS_DIR "cache/dbus"
+ #define DBUS_SESSION_BUS_DIR "session-bus"
+
+	   /* this patch changes the dbus session-bus
+           * directory frome $HOME to $HOME/.cache */
