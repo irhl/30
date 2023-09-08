@@ -1,0 +1,124 @@
+diff -u a/config.def.h b/config.def.h
+--- a/config.def.h	2023-09-08 02:30:16.235630026 +0000
++++ b/config.def.h	2023-09-08 02:39:35.192584033 +0000
+@@ -1,8 +1,8 @@
+ #ifdef INCLUDE_WINDOW_CONFIG
+ 
+ /* default window dimensions (overwritten via -g option): */
+-static const int WIN_WIDTH  = 800;
+-static const int WIN_HEIGHT = 600;
++static const int WIN_WIDTH  = 420;
++static const int WIN_HEIGHT = 460;
+ 
+ /* colors and font can be overwritten via X resource properties.
+  * See nsxiv(1), X(7) section Resources and xrdb(1) for more information.
+@@ -16,7 +16,7 @@
+ static const char *BAR_FONT[] = { "Nsxiv.bar.font",            "monospace-8" };
+ 
+ /* if true, statusbar appears on top of the window */
+-static const bool TOP_STATUSBAR = false;
++static const bool TOP_STATUSBAR = true;
+ #endif /* HAVE_LIBFONTS */
+ 
+ #endif
+@@ -74,10 +74,10 @@
+ #ifdef INCLUDE_THUMBS_CONFIG
+ 
+ /* thumbnail sizes in pixels (width == height): */
+-static const int thumb_sizes[] = { 32, 64, 96, 128, 160 };
++static const int thumb_sizes[] = { 64, 112, 170, 354 };
+ 
+ /* thumbnail size at startup, index into thumb_sizes[]: */
+-static const int THUMB_SIZE = 3;
++static const int THUMB_SIZE = 2;
+ 
+ #endif
+ #ifdef INCLUDE_MAPPINGS_CONFIG
+Common subdirectories: a/etc and b/etc
+Common subdirectories: a/.git and b/.git
+Common subdirectories: a/.github and b/.github
+Common subdirectories: a/icon and b/icon
+diff -u a/main.c b/main.c
+--- a/main.c	2023-09-08 02:30:16.237630026 +0000
++++ b/main.c	2023-09-08 04:05:49.992158234 +0000
+@@ -456,7 +456,7 @@
+ 			bar_put(r, "Loading... %0*d | ", fw, tns.loadnext + 1);
+ 		else if (tns.initnext < filecnt)
+ 			bar_put(r, "Caching... %0*d | ", fw, tns.initnext + 1);
+-		bar_put(r, "%s%0*d/%d", mark, fw, fileidx + 1, filecnt);
++		bar_put(r, "%s[%0*d/%d]", mark, fw, fileidx + 1, filecnt);
+ 		if (info.ft.err)
+ 			strncpy(l->buf, files[fileidx].name, l->size);
+ 	} else {
+@@ -473,13 +473,12 @@
+ 			bar_put(r, "B%+d" BAR_SEP, img.brightness);
+ 		if (img.contrast)
+ 			bar_put(r, "C%+d" BAR_SEP, img.contrast);
+-		bar_put(r, "%3d%%" BAR_SEP, (int)(img.zoom * 100.0));
+ 		if (img.multi.cnt > 0) {
+ 			for (fn = 0, i = img.multi.cnt; i > 0; fn++, i /= 10)
+ 				;
+ 			bar_put(r, "%0*d/%d" BAR_SEP, fn, img.multi.sel + 1, img.multi.cnt);
+ 		}
+-		bar_put(r, "%0*d/%d", fw, fileidx + 1, filecnt);
++		bar_put(r, "[%0*d/%d]", fw, fileidx + 1, filecnt);
+ 		if (info.f.err)
+ 			strncpy(l->buf, files[fileidx].name, l->size);
+ 	}
+diff -u a/thumbs.c b/thumbs.c
+--- a/thumbs.c	2023-09-08 02:30:16.237630026 +0000
++++ b/thumbs.c	2023-08-14 16:36:25.845618373 +0000
+@@ -196,23 +196,21 @@
+ static Imlib_Image tns_scale_down(Imlib_Image im, int dim)
+ {
+ 	int w, h;
+-	float z, zw, zh;
+ 
+ 	imlib_context_set_image(im);
+ 	w = imlib_image_get_width();
+ 	h = imlib_image_get_height();
+-	zw = (float)dim / (float)w;
+-	zh = (float)dim / (float)h;
+-	z = MIN(zw, zh);
+-	z = MIN(z, 1.0);
+-
+-	if (z < 1.0) {
+-		imlib_context_set_anti_alias(1);
+-		im = imlib_create_cropped_scaled_image(0, 0, w, h,
+-		                                       MAX(z * w, 1), MAX(z * h, 1));
+-		if (im == NULL)
+-			error(EXIT_FAILURE, ENOMEM, NULL);
+-		imlib_free_image_and_decache();
++
++	int x = (w < h) ? 0 : (w - h) / 2;
++	int y = (w > h) ? 0 : (h - w) / 2;
++
++        int s = (w < h) ? w : h;
++
++	if (dim < w || dim < h) {
++ 		imlib_context_set_anti_alias(1);
++		im = imlib_create_cropped_scaled_image(x, y, s, s, dim, dim);
++ 		if (im == NULL)
++ 		imlib_free_image_and_decache();
+ 	}
+ 	return im;
+ }
+@@ -590,3 +588,4 @@
+ 
+ 	return n;
+ }
++
+diff -u a/window.c b/window.c
+--- a/window.c	2023-09-08 02:30:16.237630026 +0000
++++ b/window.c	2023-09-08 02:40:08.720581274 +0000
+@@ -44,8 +44,8 @@
+ 	atoms[ATOM_##atom] = XInternAtom(e->dpy, #atom, False);
+ 
+ enum {
+-	H_TEXT_PAD = 5,
+-	V_TEXT_PAD = 1
++	H_TEXT_PAD = 15,
++	V_TEXT_PAD = 12
+ };
+ 
+ Atom atoms[ATOM_COUNT];
