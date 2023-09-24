@@ -3,35 +3,35 @@ diff -u a/config.def.h b/config.def.h
 +++ b/config.def.h	2023-09-08 02:39:35.192584033 +0000
 @@ -1,8 +1,8 @@
  #ifdef INCLUDE_WINDOW_CONFIG
- 
+
  /* default window dimensions (overwritten via -g option): */
 -static const int WIN_WIDTH  = 800;
 -static const int WIN_HEIGHT = 600;
 +static const int WIN_WIDTH  = 420;
 +static const int WIN_HEIGHT = 460;
- 
+
  /* colors and font can be overwritten via X resource properties.
   * See nsxiv(1), X(7) section Resources and xrdb(1) for more information.
 @@ -16,7 +16,7 @@
  static const char *BAR_FONT[] = { "Nsxiv.bar.font",            "monospace-8" };
- 
+
  /* if true, statusbar appears on top of the window */
 -static const bool TOP_STATUSBAR = false;
 +static const bool TOP_STATUSBAR = true;
  #endif /* HAVE_LIBFONTS */
- 
+
  #endif
 @@ -74,10 +74,10 @@
  #ifdef INCLUDE_THUMBS_CONFIG
- 
+
  /* thumbnail sizes in pixels (width == height): */
 -static const int thumb_sizes[] = { 32, 64, 96, 128, 160 };
 +static const int thumb_sizes[] = { 64, 112, 170, 354 };
- 
+
  /* thumbnail size at startup, index into thumb_sizes[]: */
 -static const int THUMB_SIZE = 3;
 +static const int THUMB_SIZE = 2;
- 
+
  #endif
  #ifdef INCLUDE_MAPPINGS_CONFIG
 Common subdirectories: a/etc and b/etc
@@ -73,7 +73,7 @@ diff -u a/thumbs.c b/thumbs.c
  {
  	int w, h;
 -	float z, zw, zh;
- 
+
  	imlib_context_set_image(im);
  	w = imlib_image_get_width();
  	h = imlib_image_get_height();
@@ -104,7 +104,7 @@ diff -u a/thumbs.c b/thumbs.c
  	return im;
  }
 @@ -590,3 +588,4 @@
- 
+
  	return n;
  }
 +
@@ -113,12 +113,15 @@ diff -u a/window.c b/window.c
 +++ b/window.c	2023-09-08 02:40:08.720581274 +0000
 @@ -44,8 +44,8 @@
  	atoms[ATOM_##atom] = XInternAtom(e->dpy, #atom, False);
- 
+
  enum {
 -	H_TEXT_PAD = 5,
 -	V_TEXT_PAD = 1
 +	H_TEXT_PAD = 15,
 +	V_TEXT_PAD = 12
  };
- 
+
  Atom atoms[ATOM_COUNT];
+
+           /* to apply patch, do
+           * patch -p1 -d nsxiv < nsxiv/nsxiv_square_bomb.patch */
