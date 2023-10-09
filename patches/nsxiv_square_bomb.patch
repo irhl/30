@@ -1,6 +1,6 @@
 diff -u a/config.def.h b/config.def.h
---- a/config.def.h	2023-09-08 02:30:16.235630026 +0000
-+++ b/config.def.h	2023-09-08 02:39:35.192584033 +0000
+--- a/config.def.h	2023-10-01 11:32:32.000000000 +0000
++++ b/config.def.h	2023-10-09 13:06:04.528995970 +0000
 @@ -1,8 +1,8 @@
  #ifdef INCLUDE_WINDOW_CONFIG
 
@@ -34,14 +34,14 @@ diff -u a/config.def.h b/config.def.h
 
  #endif
  #ifdef INCLUDE_MAPPINGS_CONFIG
-Common subdirectories: a/etc and b/etc
-Common subdirectories: a/.git and b/.git
-Common subdirectories: a/.github and b/.github
-Common subdirectories: a/icon and b/icon
+Only in a: config.mk
+Only in a: .editorconfig
+Only in a: etc
+Only in a: .github
 diff -u a/main.c b/main.c
---- a/main.c	2023-09-08 02:30:16.237630026 +0000
-+++ b/main.c	2023-09-08 04:05:49.992158234 +0000
-@@ -456,7 +456,7 @@
+--- a/main.c	2023-10-01 11:32:32.000000000 +0000
++++ b/main.c	2023-10-09 13:08:11.352009115 +0000
+@@ -475,7 +475,7 @@
  			bar_put(r, "Loading... %0*d | ", fw, tns.loadnext + 1);
  		else if (tns.initnext < filecnt)
  			bar_put(r, "Caching... %0*d | ", fw, tns.initnext + 1);
@@ -50,7 +50,7 @@ diff -u a/main.c b/main.c
  		if (info.ft.err)
  			strncpy(l->buf, files[fileidx].name, l->size);
  	} else {
-@@ -473,13 +473,12 @@
+@@ -492,13 +492,12 @@
  			bar_put(r, "B%+d" BAR_SEP, img.brightness);
  		if (img.contrast)
  			bar_put(r, "C%+d" BAR_SEP, img.contrast);
@@ -66,9 +66,9 @@ diff -u a/main.c b/main.c
  			strncpy(l->buf, files[fileidx].name, l->size);
  	}
 diff -u a/thumbs.c b/thumbs.c
---- a/thumbs.c	2023-09-08 02:30:16.237630026 +0000
-+++ b/thumbs.c	2023-08-14 16:36:25.845618373 +0000
-@@ -196,23 +196,21 @@
+--- a/thumbs.c	2023-10-01 11:32:32.000000000 +0000
++++ b/thumbs.c	2023-10-09 13:09:55.182019878 +0000
+@@ -203,23 +203,21 @@
  static Imlib_Image tns_scale_down(Imlib_Image im, int dim)
  {
  	int w, h;
@@ -81,7 +81,7 @@ diff -u a/thumbs.c b/thumbs.c
 -	zh = (float)dim / (float)h;
 -	z = MIN(zw, zh);
 -	z = MIN(z, 1.0);
--
+
 -	if (z < 1.0) {
 -		imlib_context_set_anti_alias(1);
 -		im = imlib_create_cropped_scaled_image(0, 0, w, h,
@@ -89,7 +89,6 @@ diff -u a/thumbs.c b/thumbs.c
 -		if (im == NULL)
 -			error(EXIT_FAILURE, ENOMEM, NULL);
 -		imlib_free_image_and_decache();
-+
 +	int x = (w < h) ? 0 : (w - h) / 2;
 +	int y = (w > h) ? 0 : (h - w) / 2;
 +
@@ -103,14 +102,11 @@ diff -u a/thumbs.c b/thumbs.c
  	}
  	return im;
  }
-@@ -590,3 +588,4 @@
-
- 	return n;
- }
-+
+Only in a: utf8.h
+Only in a: util.c
 diff -u a/window.c b/window.c
---- a/window.c	2023-09-08 02:30:16.237630026 +0000
-+++ b/window.c	2023-09-08 02:40:08.720581274 +0000
+--- a/window.c	2023-10-01 11:32:32.000000000 +0000
++++ b/window.c	2023-10-09 13:04:45.673987796 +0000
 @@ -44,8 +44,8 @@
  	atoms[ATOM_##atom] = XInternAtom(e->dpy, #atom, False);
 
