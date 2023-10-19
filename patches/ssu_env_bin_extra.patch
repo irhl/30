@@ -1,0 +1,16 @@
+diff -u a/ssu.c b/ssu.c
+--- a/ssu.c	2023-10-19 15:01:46.133394402 +0000
++++ b/ssu.c	2023-10-19 15:03:13.013400650 +0000
+@@ -8,7 +8,7 @@
+ #include <sys/wait.h>
+
+ #ifndef ENV_PATH
+-#define ENV_PATH "/bin:/sbin:/usr/bin:/usr/sbin"
++#define ENV_PATH "/home/user/.local/share/bin:/bin:/sbin:/usr/bin:/usr/sbin"
+ #endif
+
+ static int exec_file(char **argv)
+
+
+           /* before applying the patch, change user
+           * with your current user */
