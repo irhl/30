@@ -8,3 +8,7 @@ What does the patches do?
 
       -> cute makeover
       -> can look too appealing for ricing
+
+  ssu 606a96b
+
+      -> adds an extra bin path for the user
