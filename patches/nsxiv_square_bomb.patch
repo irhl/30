@@ -7,8 +7,8 @@ diff -u a/config.def.h b/config.def.h
  /* default window dimensions (overwritten via -g option): */
 -static const int WIN_WIDTH  = 800;
 -static const int WIN_HEIGHT = 600;
-+static const int WIN_WIDTH  = 420;
-+static const int WIN_HEIGHT = 460;
++static const int WIN_WIDTH  = 410;
++static const int WIN_HEIGHT = 458;
 
  /* colors and font can be overwritten via X resource properties.
   * See nsxiv(1), X(7) section Resources and xrdb(1) for more information.
